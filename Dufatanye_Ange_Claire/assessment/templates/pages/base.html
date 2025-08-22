@@ -7,11 +7,30 @@
         <title></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="/assessment/static/bootstrap-5.3.7-dist/css/bootstrap.min.css">
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'bootstrap-5.3.7-dist/css/bootstrap.min.css' %}">
+
+
     </head>
     <body>
          {% block content %}{% endblock %}
+
+    <style>
+/* Target table headers inside .custom-table */
+.custom-table thead th {
+    background-color: black !important;  /* !important forces override */
+    color: white !important;
+    border: 1px solid #000 !important;
+}
+
+/* Optional: add border to tbody cells */
+.custom-table tbody td {
+    border: 1px solid #000 !important;
+}
+</style>
+
         
-        <script src="/assessment/static/bootstrap-5.3.7-dist/js/bootstrap.bundle.js" async defer></script>
+<script src="{% static 'bootstrap-5.3.7-dist/js/bootstrap.bundle.js' %}"></script>
+
     </body>
 </html>

@@ -1,105 +1,106 @@
-
-
-
 {% extends "pages/base.html" %}
-{% block content %}
-<!DOCTYPE html>
+{% load humanize %}
 
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>products</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="/assessment/static/bootstrap-5.3.7-dist/css/bootstrap.min.css">
-    </head>
-    <body>
-      <!-- Left: Stock Summary Cards -->
-    <div class="col-md-6 mb-3">
-      <div class="card shadow-sm text-center h-100">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-6 mb-3">
-              <p class="h3">{{ stock_summary.sales|default:"0" }}</p>
-              <small>Sales</small>
-            </div>
-            <div class="col-6 mb-3">
-              <p class="h3">{{ stock_summary.orders|default:"0" }}</p>
-              <small>Orders</small>
-            </div>
-          </div>
-          <div class="row mt-3">
-            <div class="col-6 mb-3">
-              <p class="h3">{{ stock|default:"0" }}</p>
-              <small>In Stock</small>
-            </div>
-            <div class="col-6 mb-3">
-              <p class="h3">{{ out_stock_count|default:"0" }}</p>
-              <small>Out of Stock</small>
+{% block content %}
+
+<div class="container mt-4">
+  <div class="row g-3">
+
+    <!-- Left Column: Dashboard Cards -->
+    <div class="col-md-6">
+
+      <!-- Sales / Orders Row -->
+      <div class="d-flex mb-3" style="background-color: white; border-radius: 5px; overflow: hidden;">
+        <div class="flex-fill text-center p-4" style="border-right: 1px solid #ccc;">
+          <p class="h3">{{ stock_summary.sales|default:"0"|intcomma }}</p>
+          <small>Sales</small>
+        </div>
+        <div class="flex-fill text-center p-4">
+          <p class="h3">{{ stock_summary.orders|default:"0"|intcomma }}</p>
+          <small>Orders</small>
+        </div>
+      </div>
+
+      <!-- In Stock / Out of Stock Row -->
+      <div class="row g-3 mt-3">
+        <div class="col-6">
+          <div class="card shadow-sm text-center h-100" style="background-color: white; padding: 20px; color: green;">
+            <div class="card-body">
+              <p class="h3">{{ stock|default:"0"|intcomma }}</p>
+              <small style="color: black;">In Stock</small>
             </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Right: Add Product Form -->
-    <div class="col-md-6 mb-3">
-      <div class="card shadow-sm h-100">
+        <div class="col-6">
+          <div class="card shadow-sm text-center h-100" style="background-color: white; padding: 20px; color: red;">
+            <div class="card-body">
+              <p class="h3">{{ out_stock_count|default:"0"|intcomma }}</p>
+              <small style="color: black;">Out of Stock</small>
+            </div>
+          </div>
+        </div>
+      </div> <!-- End In/Out Stock Row -->
+
+    </div> <!-- End Left Column -->
+
+    <!-- Right Column: Add Product Form -->
+    <div class="col-md-6">
+      <div class="card shadow-sm h-100" style="background-color: white; padding: 20px; height: 100%;">
         <div class="card-body">
           <h3 class="text-center mb-4">Add Product</h3>
           <form method="POST">
             {% csrf_token %}
             <div class="row">
               <div class="col-md-6 mb-3">
-                <label for="id_id" class="form-label">ID</label><br>
+                <label for="id_id" class="form-label">ID</label>
                 {{ form.id }}
               </div>
               <div class="col-md-6 mb-3">
-                <label for="id_name" class="form-label">Name</label><br>
+                <label for="id_name" class="form-label">Name</label>
                 {{ form.name }}
               </div>
             </div>
             <div class="mb-3">
-              <label for="id_categories" class="form-label">Categories</label><br>
+              <label for="id_categories" class="form-label">Categories</label>
               {{ form.categories }}
             </div>
             <div class="mb-3">
-              <label for="id_price" class="form-label">Price</label><br>
+              <label for="id_price" class="form-label">Price (UGX)</label>
               {{ form.price }}
             </div>
             <div class="mb-3">
-              <label for="id_quantity" class="form-label">Quantity</label><br>
+              <label for="id_quantity" class="form-label">Quantity</label>
               {{ form.quantity }}
-            </div><br>
+            </div>
             <div class="text-center mt-4">
-              <button type="submit" class="btn btn-success px-4">Save</button>
+              <button type="submit" class="btn btn-danger px-4">Save</button>
               <a href="{% url 'product' %}" class="btn btn-secondary px-4">Clear</a>
             </div>
           </form>
         </div>
       </div>
-    </div>
+    </div> <!-- End Right Column -->
 
-  </div>
-</div>
+  </div> <!-- End Main Row -->
 
-  <!-- Row 2: Products Table Full Width -->
-<div class="row">
+  <!-- Products Table -->
+ 
+
+<div class="row mt-4">
   <div class="col-12">
     <div class="card shadow-lg border-0 rounded-3">
       <div class="card-body">
-        <h5 class="card-title text-center mb-4 text-success">Product Requests</h5>
         {% if requests %}
           <div class="table-responsive">
-            <table class="table table-striped table-hover table-bordered text-center align-middle border-3">
-              <thead class="bg-success text-white">
+            <table class="table table-striped table-hover text-center align-middle custom-table">
+              <thead>
                 <tr>
-                  <th scope="col">ID</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Categories</th>
-                  <th scope="col">Price</th>
-                  <th scope="col">Quantity</th>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Categories</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
                 </tr>
               </thead>
               <tbody>
@@ -108,28 +109,21 @@
                     <td>{{ req.id }}</td>
                     <td>{{ req.name }}</td>
                     <td>{{ req.categories }}</td>
-                    <td>${{ req.price }}</td>
+                    <td>UGX {{ req.price|intcomma }}</td>
                     <td>{{ req.quantity }}</td>
                   </tr>
                 {% endfor %}
               </tbody>
             </table>
           </div>
-        {% else %}
+          {% else %}
           <p class="text-center text-muted">No products found.</p>
-        {% endif %}
+          {% endif %}
+        </div>
       </div>
     </div>
-  </div>
-</div>
+  </div> <!-- End Products Table Row -->
 
+</div> <!-- End Container -->
 
 {% endblock content %}
-
-        
-        <script src="/assessment/static/bootstrap-5.3.7-dist/js/bootstrap.bundle.js" async defer></script>
-    </body>
-</html>
-
-
-    

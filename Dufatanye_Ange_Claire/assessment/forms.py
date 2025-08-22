@@ -9,6 +9,7 @@ class ProductForm(forms.ModelForm):
             'id': forms.NumberInput(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'categories': forms.TextInput(attrs={'class': 'form-control'}),
-            'price': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
+           'price': forms.NumberInput(attrs={'class': 'form-control'}),
+
             'quantity': forms.NumberInput(attrs={'class': 'form-control'}),
         }
